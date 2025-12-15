@@ -1,42 +1,52 @@
-<?php
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../config/config.php';
+﻿<?php
 
-function isLoggedIn(): bool {
-    return isset($_SESSION['user_id']);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-function requireLogin(): void {
+function isLoggedIn() {
+    return !empty($_SESSION["user"]);
+}
+
+function currentUser() {
+    return $_SESSION["user"] ?? null;
+}
+
+function requireRole(array $roles) {
     if (!isLoggedIn()) {
-        header('Location: ' . BASE_URL . 'login.php');
+        header("Location: " . BASE_URL . "login.php");
+        exit;
+    }
+    $u = currentUser();
+    if (!in_array($u["role"], $roles, true)) {
+        header("Location: " . BASE_URL . "index.php");
         exit;
     }
 }
 
-function requireRole(array $roles): void {
-    requireLogin();
-    if (!in_array($_SESSION['role'] ?? '', $roles, true)) {
-        header('Location: ' . BASE_URL . 'login.php?error=access_denied');
-        exit;
+/**
+ * Sanitasi input sederhana untuk teks dan array teks.
+ */
+function sanitize($input) {
+    if (is_array($input)) {
+        $result = [];
+        foreach ($input as $k => $v) {
+            $result[$k] = sanitize($v);
+        }
+        return $result;
     }
+    return htmlspecialchars(trim((string)$input), ENT_QUOTES, "UTF-8");
 }
 
-function currentUser(): ?array {
-    if (!isLoggedIn()) {
-        return null;
+/**
+ * Helper redirect sederhana.
+ */
+function redirect(string $path) {
+    // jika path sudah absolut (mulai dengan http atau BASE_URL), kirim apa adanya
+    if (preg_match("/^https?:\\/\\//", $path)) {
+        header("Location: " . $path);
+    } else {
+        header("Location: " . BASE_URL . ltrim($path, "/"));
     }
-    global $pdo;
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['user_id']]);
-    return $stmt->fetch() ?: null;
-}
-
-function sanitize(string $value): string {
-    return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
-}
-
-function redirect(string $path): void {
-    header('Location: ' . BASE_URL . ltrim($path, '/'));
     exit;
 }
-?>

@@ -1,64 +1,96 @@
-<?php
-require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/functions.php';
+﻿<?php
+require_once __DIR__ . "/config/config.php";
+require_once __DIR__ . "/includes/functions.php";
 
-$error = '';
+global $pdo;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $usernameOrEmail = sanitize($_POST['username'] ?? '');
-    $password        = $_POST['password'] ?? '';
-
-    if ($usernameOrEmail === '' || $password === '') {
-        $error = 'Username/email dan password wajib diisi.';
+// jika sudah login, langsung ke dashboard masing-masing
+if (function_exists("isLoggedIn") && isLoggedIn()) {
+    $u = currentUser();
+    if ($u["role"] === "admin" || $u["role"] === "teacher") {
+        header("Location: " . BASE_URL . "teacher/dashboard.php");
     } else {
-        $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ? OR email = ? LIMIT 1');
-        $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
-        $user = $stmt->fetch();
-       
+        header("Location: " . BASE_URL . "student/dashboard.php");
+    }
+    exit;
+}
 
+$error_message = "";
+$success_message = "";
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['role']    = $user['role'];
-            $_SESSION['level']   = $user['level'] ?? 'N5';
+if (isset($_GET["registered"])) {
+    $success_message = "Pendaftaran berhasil. Silakan login.";
+}
 
-            if ($user['role'] === 'student') {
-                redirect('student/dashboard.php');
-            } elseif ($user['role'] === 'teacher') {
-                redirect('teacher/dashboard.php');
-            } elseif ($user['role'] === 'admin') {
-                redirect('admin/index.php');
-            } else {
-                redirect('login.php');
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $login   = trim($_POST["username"] ?? "");
+    $pass    = $_POST["password"] ?? "";
+
+    if ($login === "" || $pass === "") {
+        $error_message = "Username/email dan password wajib diisi.";
+    } else {
+        // cari user berdasarkan username atau email
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR email = ? LIMIT 1");
+        $stmt->execute([$login, $login]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($pass, $user["password"])) {
+            // simpan ke session
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
             }
+            $_SESSION["user"] = [
+                "id"        => $user["id"],
+                "username"  => $user["username"],
+                "email"     => $user["email"],
+                "role"      => $user["role"],
+                "full_name" => $user["full_name"],
+                "level"     => $user["level"],
+            ];
+
+            // redirect sesuai role
+            if ($user["role"] === "admin" || $user["role"] === "teacher") {
+                header("Location: " . BASE_URL . "teacher/dashboard.php");
+            } else {
+                header("Location: " . BASE_URL . "student/dashboard.php");
+            }
+            exit;
         } else {
-            $error = 'Username/email atau password salah.';
+            $error_message = "Username/email atau password salah.";
         }
     }
 }
 
-$page_title = 'Login - Japanese LMS';
-require __DIR__ . '/includes/header.php';
+$page_title = "Login";
+require __DIR__ . "/includes/header.php";
 ?>
-<div class="login-page">
-    <div class="login-card">
-        <h1>Japanese LMS</h1>
-        <p>Masuk untuk mulai belajar JLPT N5-N4</p>
-
-        <?php if ($error): ?>
-        <div class="alert alert-error"><?php echo $error; ?></div>
-        <?php endif; ?>
-
-        <form method="post" class="login-form">
-            <label>Username atau Email</label>
-            <input type="text" name="username" required>
-
-            <label>Password</label>
-            <input type="password" name="password" required>
-
-            <button type="submit">Masuk</button>
-        </form>
+<div class="card" style="max-width:420px;margin:40px auto;">
+    <div class="card-header">
+        <div class="card-title">Masuk ke Nihongo Daichi Online</div>
     </div>
+    <?php if ($success_message): ?>
+        <p style="color:#2e7d32;"><?php echo htmlspecialchars($success_message); ?></p>
+    <?php endif; ?>
+    <?php if ($error_message): ?>
+        <p style="color:#c62828;"><?php echo htmlspecialchars($error_message); ?></p>
+    <?php endif; ?>
+    <form method="post" action="login.php">
+        <p>
+            <label>Username atau Email<br>
+                <input type="text" name="username" required>
+            </label>
+        </p>
+        <p>
+            <label>Password<br>
+                <input type="password" name="password" required>
+            </label>
+        </p>
+        <p>
+            <button type="submit">Masuk</button>
+        </p>
+        <p>
+            Belum punya akun? <a href="<?php echo BASE_URL; ?>register.php">Daftar sebagai siswa baru</a>
+        </p>
+    </form>
 </div>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . "/includes/footer.php"; ?>

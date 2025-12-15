@@ -27,7 +27,7 @@ $lessons = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </select>
         </label>
         <button type="submit">Terapkan</button>
-        <a class="button secondary" href="<?php echo BASE_URL; ?>teacher/lesson-create.php">+ Tambah materi</a>
+        <a class="button secondary" href="lesson-create.php">+ Tambah materi</a>
     </form>
 
     <?php if (!$lessons): ?>
@@ -48,10 +48,8 @@ $lessons = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($lesson["title"]); ?></td>
                     <td><?php echo (int)$lesson["created_by"]; ?></td>
                     <td>
-                        <a class="button secondary"
-                           href="<?php echo BASE_URL; ?>teacher/lesson-edit.php?id=<?php echo (int)$lesson["id"]; ?>">Edit</a>
-                        <a class="button"
-                           href="<?php echo BASE_URL; ?>teacher/lesson-delete.php?id=<?php echo (int)$lesson["id"]; ?>"
+                        <a class="button secondary" href="lesson-edit.php?id=<?php echo (int)$lesson["id"]; ?>">Edit</a>
+                        <a class="button" href="lesson-delete.php?id=<?php echo (int)$lesson["id"]; ?>"
                            onclick="return confirm('Hapus materi ini?');">Hapus</a>
                     </td>
                 </tr>

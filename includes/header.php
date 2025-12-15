@@ -1,14 +1,15 @@
-<?php
+﻿<?php
 if (!isset($page_title)) {
-    $page_title = "Japanese LMS";
+    $page_title = "Nihongo Daichi Online";
 }
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($page_title); ?> - Japanese LMS</title>
+    <title><?php echo htmlspecialchars($page_title); ?> - Nihongo Daichi Online</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Nihongo Daichi Online adalah platform belajar bahasa Jepang berbasis buku Daichi 1–2, dirancang khusus untuk mempersiapkan siswa berangkat ke Jepang dengan visa TG melalui latihan JLPT N5–N4 yang terstruktur.">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/japanese-theme.css">
 </head>
 <body>
@@ -16,10 +17,10 @@ if (!isset($page_title)) {
     <header class="site-header">
         <div class="site-header-inner">
             <div class="site-logo">
-                <div class="site-logo-mark">?</div>
+                <div class="site-logo-mark">日</div>
                 <div>
-                    <div class="site-logo-text-main">Japanese LMS</div>
-                    <div class="site-logo-text-sub">??????????????</div>
+                    <div class="site-logo-text-main">Nihongo Daichi Online</div>
+                    <div class="site-logo-text-sub">にほんご大地オンライン（Visa TG 対応）</div>
                 </div>
             </div>
             <nav class="site-nav">
