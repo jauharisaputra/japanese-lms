@@ -1,0 +1,239 @@
+:root {
+    --jp-red: #e53935;
+    --jp-dark: #1a1a1a;
+    --jp-cream: #fff7e6;
+    --jp-accent: #ffb74d;
+    --jp-border: #e0e0e0;
+    --jp-bg: #fafafa;
+    --jp-link: #1565c0;
+    --jp-link-hover: #0d47a1;
+    --jp-radius: 8px;
+    --jp-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--jp-bg);
+    color: var(--jp-dark);
+}
+
+/* Layout dasar */
+.site-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-header {
+    background: linear-gradient(120deg, var(--jp-red), #b71c1c);
+    color: #fff;
+    padding: 16px 32px;
+    box-shadow: var(--jp-shadow);
+    border-bottom: 4px solid rgba(255,255,255,0.2);
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.site-logo-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--jp-cream);
+    color: var(--jp-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 22px;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.4);
+}
+
+.site-logo-text-main {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.site-logo-text-sub {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.site-nav a {
+    color: #ffece6;
+    margin-left: 16px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.site-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Konten */
+.site-main {
+    flex: 1;
+    padding: 24px 32px;
+}
+
+/* Kartu umum */
+.card {
+    background: #fff;
+    border-radius: var(--jp-radius);
+    box-shadow: var(--jp-shadow);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--jp-border);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--jp-radius);
+    overflow: hidden;
+    box-shadow: var(--jp-shadow);
+}
+
+th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--jp-border);
+    font-size: 14px;
+}
+
+th {
+    background: var(--jp-cream);
+    text-align: left;
+    font-weight: 600;
+}
+
+tr:nth-child(even) td {
+    background: #fffdf8;
+}
+
+/* Tombol & link */
+a.button,
+button,
+input[type=submit],
+input[type=button] {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: none;
+    background: var(--jp-red);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+}
+
+a.button.secondary,
+button.secondary {
+    background: var(--jp-accent);
+    color: #4e342e;
+}
+
+a.button:hover,
+button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+    background: #c62828;
+    transform: translateY(-1px);
+}
+
+a {
+    color: var(--jp-link);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--jp-link-hover);
+    text-decoration: underline;
+}
+
+/* Heading */
+h1, h2, h3 {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+/* Footer */
+.site-footer {
+    background: #111;
+    color: #eee;
+    padding: 12px 24px;
+    font-size: 12px;
+    text-align: center;
+    border-top: 3px solid var(--jp-red);
+}
+
+.site-footer span.jp-label {
+    color: var(--jp-accent);
+}
+
+/* Progress bar sederhana */
+.progress-bar-wrapper {
+    background: #f0f0f0;
+    border-radius: 999px;
+    overflow: hidden;
+    height: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--jp-red);
+    transition: width 0.3s;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .site-header {
+        padding: 12px 16px;
+    }
+    .site-main {
+        padding: 16px;
+    }
+    .site-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .site-nav {
+        margin-top: 8px;
+    }
+}
