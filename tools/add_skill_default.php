@@ -1,7 +1,7 @@
 ﻿<?php
 // Koneksi manual ke database LMS
 $host = '127.0.0.1';
-$db   = 'japanese_lms';
+$db   = 'nihongo_daichi_online';
 $user = 'root';
 $pass = '';
 $dsn  = "mysql:host=$host;dbname=$db;charset=utf8mb4";

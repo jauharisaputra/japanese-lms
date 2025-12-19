@@ -5,7 +5,7 @@ define("BASE_URL", "/japanese-lms/");
 
 // sesuaikan kalau Anda memakai kredensial lain
 define("DB_HOST", "localhost");
-define("DB_NAME", "japanese_lms");
+define("DB_NAME", "nihongo_daichi_online");
 define("DB_USER", "root");
 define("DB_PASS", "");
 

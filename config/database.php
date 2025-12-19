@@ -1,6 +1,6 @@
 ﻿<?php
 $host     = 'localhost';
-$dbname   = 'japanese_lms';
+$dbname   = 'nihongo_daichi_online';
 $username = 'root';
 $password = ''; // default XAMPP
 
