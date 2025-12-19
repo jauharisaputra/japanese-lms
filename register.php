@@ -16,7 +16,7 @@ $full_name = "";
 $level = "N5";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    global $pdo;
+    $pdo = getPDO();
 
     $username  = trim($_POST["username"] ?? "");
     $email     = trim($_POST["email"] ?? "");

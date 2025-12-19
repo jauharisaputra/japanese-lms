@@ -3,7 +3,7 @@ require_once __DIR__ . "/../config/config.php";
 require_once __DIR__ . "/../includes/functions.php";
 
 requireRole(["teacher","admin"]);
-global $pdo;
+$pdo = getPDO();
 
 $student_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
 if ($student_id <= 0) {

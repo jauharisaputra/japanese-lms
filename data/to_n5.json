@@ -1,0 +1,13 @@
+{"exam_id":1,"level":"N5","title":"TO N5 Dummy","sections":{
+  "bunpo_goi":[
+    {"id":1,"question":"Contoh soal 1?","choices":{"A":"Pilihan A","B":"Pilihan B","C":"Pilihan C","D":"Pilihan D"},"answer":"A","point":3},
+    {"id":2,"question":"Contoh soal 2?","choices":{"A":"Pilihan A2","B":"Pilihan B2","C":"Pilihan C2","D":"Pilihan D2"},"answer":"B","point":3}
+  ],
+  "dokkai":[],
+  "kanji":[],
+  "sakubun":[],
+  "photo":[],
+  "list_read":[],
+  "ougo":[],
+  "kaiwa_setsumei":[]
+}}

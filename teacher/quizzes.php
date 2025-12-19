@@ -6,7 +6,7 @@ requireRole(["teacher","admin"]);
 $page_title = "Kelola Kuis";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 
 $level = $_GET["level"] ?? "N5";
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/functions.php';
 
@@ -6,7 +6,7 @@ requireRole(['teacher','admin']);
 $page_title = 'Detail Attempt Kuis';
 require __DIR__ . '/../includes/header.php';
 
-global $pdo;
+$pdo = getPDO();
 
 $attempt_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($attempt_id <= 0) {

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/functions.php';
 
@@ -6,7 +6,7 @@ requireRole(['teacher','admin']);
 $page_title = 'Progress Lesson Siswa';
 require __DIR__ . '/../includes/header.php';
 
-global $pdo;
+$pdo = getPDO();
 
 $level = $_GET['level'] ?? 'N5';
 

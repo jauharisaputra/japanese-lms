@@ -6,7 +6,7 @@ requireRole(["student"]);
 $page_title = "Detail Materi";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 $user    = currentUser();
 $user_id = $user["id"];
 

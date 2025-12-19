@@ -1,4 +1,4 @@
-<h1><?php echo htmlspecialchars($quiz['title']); ?></h1>
+﻿<h1><?php echo htmlspecialchars($quiz['title']); ?></h1>
 
 <?php if ($result): ?>
     <p>Nilai Anda: <strong><?php echo $result['score']; ?></strong>

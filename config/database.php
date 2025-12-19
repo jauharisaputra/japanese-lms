@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $host     = 'localhost';
 $dbname   = 'japanese_lms';
 $username = 'root';

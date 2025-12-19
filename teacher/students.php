@@ -6,7 +6,7 @@ requireRole(["teacher","admin"]);
 $page_title = "Kelola Siswa";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 
 $stmt = $pdo->query("
     SELECT u.id, u.username, u.full_name, u.email, u.level,

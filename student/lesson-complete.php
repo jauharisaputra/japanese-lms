@@ -12,7 +12,7 @@ if (!isset($_GET["lesson_id"])) {
 $lesson_id = (int)$_GET["lesson_id"];
 $redirect  = $_GET["redirect"] ?? "lesson-view.php?id={$lesson_id}";
 
-global $pdo;
+$pdo = getPDO();
 $user = currentUser();
 $user_id = $user["id"];
 

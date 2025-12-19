@@ -6,7 +6,7 @@ requireRole(["teacher","admin"]);
 $page_title = "Kelola Kelas";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

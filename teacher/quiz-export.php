@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 requireRole(['teacher','admin']);
 
-global $pdo;
+$pdo = getPDO();
 
 $quiz_id = isset($_GET['quiz_id']) ? (int)$_GET['quiz_id'] : 0;
 if ($quiz_id <= 0) {

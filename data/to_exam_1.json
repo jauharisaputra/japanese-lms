@@ -1,0 +1,34 @@
+{
+    "exam_id": 1,
+    "level": "N5",
+    "title": "TO N5 Batch 1",
+
+    "sections": {
+        "kanji": [
+            {
+                "id": 1,
+                "question": "ini",
+                "choices": {
+                    "A": "b",
+                    "B": "c",
+                    "C": "d",
+                    "D": "apa"
+                },
+                "answer": "A",
+                "point": 3
+            },
+            {
+                "id": 2,
+                "question": "ini",
+                "choices": {
+                    "A": "b",
+                    "B": "c",
+                    "C": "d",
+                    "D": "apa"
+                },
+                "answer": "A",
+                "point": 3
+            }
+        ]
+    }
+}

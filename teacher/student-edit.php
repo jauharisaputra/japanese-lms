@@ -3,7 +3,7 @@ require_once __DIR__ . "/../config/config.php";
 require_once __DIR__ . "/../includes/functions.php";
 
 requireRole(["teacher","admin"]);
-global $pdo;
+$pdo = getPDO();
 
 $student_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
 if ($student_id <= 0) {
@@ -17,10 +17,10 @@ if (!$student) {
     redirect("teacher/students.php");
 }
 
-$page_title = "Edit Siswa / Kelas";
+$page_title = "Edit Siswa / Level";
 require __DIR__ . "/../includes/header.php";
 
-$errors = [];
+$errors    = [];
 $full_name = $student["full_name"];
 $email     = $student["email"];
 $level     = $student["level"];
@@ -51,7 +51,7 @@ $classes = $pdo->query("SELECT id, name, level FROM classes ORDER BY level, name
 ?>
 <div class="card" style="max-width:600px;margin:24px auto;">
     <div class="card-header">
-        <div class="card-title">Edit Siswa / Kelas</div>
+        <div class="card-title">Edit Siswa / Level</div>
     </div>
 
     <?php if ($errors): ?>
@@ -80,6 +80,7 @@ $classes = $pdo->query("SELECT id, name, level FROM classes ORDER BY level, name
                 <select name="level">
                     <option value="N5" <?php echo $level === "N5" ? "selected" : ""; ?>>N5</option>
                     <option value="N4" <?php echo $level === "N4" ? "selected" : ""; ?>>N4</option>
+                    <option value="N3" <?php echo $level === "N3" ? "selected" : ""; ?>>N3</option>
                 </select>
             </label>
         </p>

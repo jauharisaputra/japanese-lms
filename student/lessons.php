@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . "/../config/config.php";
 require_once __DIR__ . "/../includes/functions.php";
 
@@ -6,7 +6,7 @@ requireRole(["student"]);
 $page_title = "Daftar Materi";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 $user  = currentUser();
 $level = $user["level"] ?? "N5";
 

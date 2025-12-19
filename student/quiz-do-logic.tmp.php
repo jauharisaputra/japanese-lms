@@ -1,4 +1,4 @@
-$questions = json_decode($quiz['questions'], true);
+﻿$questions = json_decode($quiz['questions'], true);
 if (!is_array($questions)) {
     echo "<p>Format soal kuis rusak.</p>";
     require __DIR__ . '/../includes/footer.php';

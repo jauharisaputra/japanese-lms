@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/functions.php';
 
@@ -6,7 +6,7 @@ requireRole(['admin', 'teacher']);
 $page_title = 'Kelola Pelajaran';
 require __DIR__ . '/../includes/header.php';
 
-global $pdo;
+$pdo = getPDO();
 $stmt = $pdo->query('SELECT id, title, level, module FROM lessons ORDER BY level, order_num');
 $lessons = $stmt->fetchAll();
 ?>

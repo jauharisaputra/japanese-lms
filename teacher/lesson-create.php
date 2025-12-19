@@ -6,7 +6,7 @@ requireRole(["teacher","admin"]);
 $page_title = "Tambah Materi";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 $user = currentUser();
 $errors = [];
 $title = "";

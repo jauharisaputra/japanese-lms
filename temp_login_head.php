@@ -2,7 +2,7 @@
 require_once __DIR__ . "/config/config.php";
 require_once __DIR__ . "/includes/functions.php";
 
-global $pdo;
+$pdo = getPDO();
 
 // jika sudah login, langsung ke dashboard masing-masing
 if (function_exists("isLoggedIn") && isLoggedIn()) {

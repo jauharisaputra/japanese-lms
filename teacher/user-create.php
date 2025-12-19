@@ -6,7 +6,7 @@ requireRole(["admin","teacher"]);
 $page_title = "Tambah Pengguna";
 require __DIR__ . "/../includes/header.php";
 
-global $pdo;
+$pdo = getPDO();
 $errors = [];
 $username = "";
 $email = "";
