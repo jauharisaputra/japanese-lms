@@ -1,19 +1,4 @@
-﻿<?php
-require_once __DIR__ . "/../config/config.php";
-require_once __DIR__ . "/../includes/functions.php";
-
-requireRole(["admin","teacher"]);
-$page_title = "Dashboard Teacher";
-require __DIR__ . "/../includes/header.php";
-
-$u = currentUser();
-?>
-<div class="card">
-    <div class="card-header">
-        <div class="card-title">Dashboard Teacher</div>
-    </div>
-    <p>Halo, <?php echo htmlspecialchars($u["full_name"] ?? $u["username"]); ?>.</p>
-    <ul>
+﻿    <ul>
         <li><a href="<?php echo BASE_URL; ?>teacher/lessons.php">Kelola materi Daichi</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/lesson-create.php">Tambah materi baru</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/quizzes.php">Kelola kuis</a></li>
@@ -25,17 +10,5 @@ $u = currentUser();
         <li><a href="<?php echo BASE_URL; ?>teacher/assignments.php">Kelola tugas (harian/mingguan/fukushuu)</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/export-grades.php">Export semua nilai (CSV)</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/placement-exams.php">Kelola ujian TO (N5/N4)</a></li>
-        <li>
-            <a href="<?php echo BASE_URL; ?>teacher/rapor_input.php">
-                📚 Input Rapor N5
-            </a>
-        </li>
-        <li>
-            <a href="<?php echo BASE_URL; ?>teacher/rapor_list.php">
-                📋 Daftar Rapor
-            </a>
-        </li>
-
-
-</div>
-<?php require __DIR__ . "/../includes/footer.php"; ?>
+        <li><a href="<?php echo BASE_URL; ?>teacher/rapor_input.php">📚 Input Rapor N5</a></li>
+    </ul>
