@@ -25,9 +25,6 @@ $u = currentUser();
     <li><a href="<?php echo BASE_URL; ?>teacher/assignments.php">Kelola tugas (harian/mingguan/fukushuu)</a></li>
     <li><a href="<?php echo BASE_URL; ?>teacher/export-grades.php">Export semua nilai (CSV)</a></li>
     <li><a href="<?php echo BASE_URL; ?>teacher/placement-exams.php">Kelola ujian TO (N5/N4)</a></li>
-
-     <li><a href="${BASE_URL}teacher/rapor_input.php">📚 Input Rapor N5</a></li>
-     <li><a href="${BASE_URL}teacher/rapor_pdf.php">📄 Generate Rapor PDF</a></li>
   </ul>
 </div>
 <?php require __DIR__ . "/../includes/footer.php"; ?>
