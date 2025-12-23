@@ -24,7 +24,7 @@ require __DIR__ . "/../includes/header.php";
         <a href="<?php echo BASE_URL; ?>student/quizzes.php">Lanjut kuis</a> |
         <a href="<?php echo BASE_URL; ?>student/scores.php">Lihat riwayat nilai</a> |
         <a href="<?php echo BASE_URL; ?>student/assignments.php">Tugas &amp; Fukushuu</a> |
-        <a href=`"<?php echo BASE_URL; ?>student/rapor_view.php`">📜 Rapor N5</a>
+        <a href="<?php echo BASE_URL; ?>student/rapor_view.php">📜 Rapor N5</a>
     </p>
 </div>
 <?php require __DIR__ . "/../includes/footer.php"; ?>
