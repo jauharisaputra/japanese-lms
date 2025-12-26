@@ -1,6 +1,6 @@
 ﻿<?php
 
-if (session_status() === PHP_SESSION_NONE) {
+if (php_sapi_name() !== 'cli' && session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -24,9 +24,6 @@ function requireRole(array $roles) {
     }
 }
 
-/**
- * Sanitasi input sederhana untuk teks dan array teks.
- */
 function sanitize($input) {
     if (is_array($input)) {
         $result = [];
@@ -38,11 +35,7 @@ function sanitize($input) {
     return htmlspecialchars(trim((string)$input), ENT_QUOTES, "UTF-8");
 }
 
-/**
- * Helper redirect sederhana.
- */
 function redirect(string $path) {
-    // jika path sudah absolut (mulai dengan http atau BASE_URL), kirim apa adanya
     if (preg_match("/^https?:\\/\\//", $path)) {
         header("Location: " . $path);
     } else {

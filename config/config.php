@@ -1,5 +1,8 @@
 ﻿<?php
-session_start();
+if (php_sapi_name() !== 'cli') {
+    session_start();
+}
+
 
 define("BASE_URL", "/japanese-lms/");
 
