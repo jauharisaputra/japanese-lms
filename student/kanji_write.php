@@ -74,36 +74,45 @@ require __DIR__ . "/../includes/header.php";
 <?php
 require __DIR__ . "/../includes/footer.php";
 ?>
+
 <script>
-function animateSvgStroke(svgEl) {
+function playAnimCJK(svgEl, speedMs = 400) {
   if (!svgEl) return;
-  const paths = svgEl.querySelectorAll("path");
-  let delay = 0;
-  paths.forEach((path) => {
-    const length = path.getTotalLength();
-    path.style.strokeDasharray  = length;
-    path.style.strokeDashoffset = length;
-    path.style.transition = "stroke-dashoffset 0.6s ease-in-out " + delay + "s";
-    delay += 0.6;
-  });
-  // trigger reflow
-  void svgEl.offsetWidth;
-  paths.forEach((path) => {
-    path.style.strokeDashoffset = 0;
-  });
+  const rootGroup = svgEl.querySelector('g[id^="kvg:StrokePaths"]') || svgEl;
+  const strokes = Array.from(rootGroup.querySelectorAll("path"));
+  if (!strokes.length) return;
+
+  strokes.forEach(p => p.style.opacity = 0);
+
+  let i = 0;
+  function showNext() {
+    if (i >= strokes.length) return;
+    strokes[i].style.transition = "opacity 0.2s ease-in-out";
+    strokes[i].style.opacity = 1;
+    i++;
+    if (i < strokes.length) {
+      setTimeout(showNext, speedMs);
+    }
+  }
+  showNext();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('object[type="image/svg+xml"]').forEach((obj) => {
+  document.querySelectorAll('object[type="image/svg+xml"]').forEach(obj => {
     obj.addEventListener("load", () => {
       try {
         const svgDoc = obj.contentDocument;
         const svgEl  = svgDoc && svgDoc.querySelector("svg");
-        animateSvgStroke(svgEl);
+        // reset animasi setiap load
+        playAnimCJK(svgEl, 400);
+        // klik pada kotak untuk replay
+        obj.addEventListener("click", () => playAnimCJK(svgEl, 300));
       } catch (e) {
-        console.error("SVG animate error", e);
+        console.error("AnimCJK error", e);
       }
     });
   });
 });
 </script>
+
+
