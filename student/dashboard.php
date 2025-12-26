@@ -26,6 +26,8 @@ require __DIR__ . "/../includes/header.php";
         <a href="<?php echo BASE_URL; ?>student/assignments.php">Tugas &amp; Fukushuu</a> |
         <a href="<?php echo BASE_URL; ?>student/rapor_view.php">📜 Rapor N5</a>
         <a href="<?php echo BASE_URL; ?>student/kanji_write.php">Belajar Menulis</a>
+        <a href="<?php echo BASE_URL; ?>student/kanji_write.php?tab=kanji&level=N5">Kanji N5</a> |
+        <a href="<?php echo BASE_URL; ?>student/kanji_write.php?tab=kanji&level=N4">Kanji N4</a>
     </p>
 </div>
 <?php require __DIR__ . "/../includes/footer.php"; ?>
