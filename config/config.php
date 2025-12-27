@@ -29,3 +29,8 @@ function getPDO() {
 
     return $pdo;
 }
+const QUIZ_ID_HIRAGANA = 19;
+const QUIZ_ID_KATAKANA = 20;
+const QUIZ_ID_KANJI_N5 = 21;
+const QUIZ_ID_KANJI_N4 = 22;
+

@@ -28,6 +28,10 @@ require __DIR__ . "/../includes/header.php";
         <a href="<?php echo BASE_URL; ?>student/kanji_write.php">Belajar Menulis</a>
         <a href="<?php echo BASE_URL; ?>student/kanji_write.php?tab=kanji&level=N5">Kanji N5</a> |
         <a href="<?php echo BASE_URL; ?>student/kanji_write.php?tab=kanji&level=N4">Kanji N4</a>
+        <a href="<?php echo BASE_URL; ?>student/quiz_hiragana.php">Kuis Hiragana</a> |
+        <a href="<?php echo BASE_URL; ?>student/quiz_katakana.php">Kuis Katakana</a> |
+        <a href="<?php echo BASE_URL; ?>student/quiz_kanji_n5.php">Kuis Kanji N5</a> |
+        <a href="<?php echo BASE_URL; ?>student/quiz_kanji_n4.php">Kuis Kanji N4</a>
     </p>
 </div>
 <?php require __DIR__ . "/../includes/footer.php"; ?>

@@ -52,10 +52,7 @@ $stmt = $pdo->query("
     LIMIT 20
 ");
 $quizRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
-        <?php var_dump($quizRows); exit; ?>
-
 </div>
 
 <div class="card" style="margin-top:16px;">
@@ -92,4 +89,3 @@ $quizRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php require __DIR__ . "/../includes/footer.php"; ?>
 
 </div>
-<?php require __DIR__ . "/../includes/footer.php"; ?>

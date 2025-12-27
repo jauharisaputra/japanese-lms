@@ -36,6 +36,62 @@ $u = currentUser();
             </a>
         </li>
 
+        <?php
+$pdo = getPDO();
+$stmt = $pdo->query("
+    SELECT 
+        qa.id,
+        qa.user_id,
+        u.full_name,
+        q.title,
+        qa.score
+    FROM quiz_attempts AS qa
+    JOIN users   AS u ON qa.user_id = u.id
+    JOIN quizzes AS q ON qa.quiz_id = q.id
+    ORDER BY qa.id DESC
+    LIMIT 20
+");
+$quizRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+</div>
 
+<div class="card" style="margin-top:16px;">
+    <div class="card-header">
+        <div class="card-title">Rekap Kuis Terbaru</div>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-sm btn-outline-primary mb-2"
+           href="<?php echo BASE_URL; ?>teacher/quiz-recap-export.php">
+            Export CSV Rekap Kuis
+        </a>
+        <?php if (!$quizRows): ?>
+        <p>Belum ada data kuis.</p>
+        <?php else: ?>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Siswa</th>
+                    <th>Jenis Kuis</th>
+                    <th>Skor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($quizRows as $r): ?>
+                <tr>
+                    <td><?= htmlspecialchars($r["id"]) ?></td>
+                    <td><?= htmlspecialchars($r["full_name"]) ?></td>
+                    <td><?= htmlspecialchars($r["title"]) ?></td>
+                    <td><?= htmlspecialchars($r["score"]) ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php endif; ?>
+    </div>
 </div>
 <?php require __DIR__ . "/../includes/footer.php"; ?>
+
+</div>
+
+
