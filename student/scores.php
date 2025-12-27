@@ -61,24 +61,24 @@ $task_rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 require __DIR__ . "/../includes/header.php";
 ?>
 <div class="card">
-  <div class="card-header">
-    <div class="card-title">Riwayat Nilai</div>
-  </div>
+    <div class="card-header">
+        <div class="card-title">Riwayat Nilai</div>
+    </div>
 
-  <h3>Ringkasan Nilai per Level</h3>
-  <?php if (!$quiz_summary && !$assign_summary): ?>
+    <h3>Ringkasan Nilai per Level</h3>
+    <?php if (!$quiz_summary && !$assign_summary): ?>
     <p>Belum ada data nilai untuk diringkas.</p>
-  <?php else: ?>
+    <?php else: ?>
     <table>
-      <tr>
-        <th>Level</th>
-        <th>Rata-rata kuis</th>
-        <th>Rata-rata tugas harian</th>
-        <th>Rata-rata tugas mingguan</th>
-        <th>Rata-rata fukushuu</th>
-        <th>Rata-rata kaiwa</th>
-      </tr>
-      <?php
+        <tr>
+            <th>Level</th>
+            <th>Rata-rata kuis</th>
+            <th>Rata-rata tugas harian</th>
+            <th>Rata-rata tugas mingguan</th>
+            <th>Rata-rata fukushuu</th>
+            <th>Rata-rata kaiwa</th>
+        </tr>
+        <?php
       $levels = array_unique(array_merge(
         array_keys($quiz_summary),
         array_keys($assign_summary)
@@ -89,63 +89,76 @@ require __DIR__ . "/../includes/header.php";
         $as = $assign_summary[$lv] ?? null;
       ?>
         <tr>
-          <td><?php echo htmlspecialchars($lv); ?></td>
-          <td><?php echo $q !== null ? round($q, 1) : "-"; ?></td>
-          <td><?php echo $as && $as["avg_daily"]  !== null ? round($as["avg_daily"], 1)  : "-"; ?></td>
-          <td><?php echo $as && $as["avg_weekly"] !== null ? round($as["avg_weekly"], 1) : "-"; ?></td>
-          <td><?php echo $as && $as["avg_review"] !== null ? round($as["avg_review"], 1) : "-"; ?></td>
-          <td><?php echo $as && $as["avg_kaiwa"]  !== null ? round($as["avg_kaiwa"], 1)  : "-"; ?></td>
+            <td><?php echo htmlspecialchars($lv); ?></td>
+            <td><?php echo $q !== null ? round($q, 1) : "-"; ?></td>
+            <td><?php echo $as && $as["avg_daily"]  !== null ? round($as["avg_daily"], 1)  : "-"; ?></td>
+            <td><?php echo $as && $as["avg_weekly"] !== null ? round($as["avg_weekly"], 1) : "-"; ?></td>
+            <td><?php echo $as && $as["avg_review"] !== null ? round($as["avg_review"], 1) : "-"; ?></td>
+            <td><?php echo $as && $as["avg_kaiwa"]  !== null ? round($as["avg_kaiwa"], 1)  : "-"; ?></td>
         </tr>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
     </table>
-  <?php endif; ?>
+    <?php endif; ?>
 
-  <h3 style="margin-top:24px;">Nilai Kuis</h3>
-  <?php if (!$quiz_rows): ?>
+    <h3 style="margin-top:24px;">Nilai Kuis</h3>
+    <?php if (!$quiz_rows): ?>
     <p>Belum ada nilai kuis.</p>
-  <?php else: ?>
+    <?php else: ?>
     <table>
-      <tr>
-        <th>Kuis</th>
-        <th>Level</th>
-        <th>Skor</th>
-      </tr>
-      <?php foreach ($quiz_rows as $r): ?>
         <tr>
-          <td><?php echo htmlspecialchars($r["quiz_title"]); ?></td>
-          <td><?php echo htmlspecialchars($r["level"]); ?></td>
-          <td><?php echo (float)$r["score"]; ?></td>
+            <th>Kuis</th>
+            <th>Level</th>
+            <th>Skor</th>
         </tr>
-      <?php endforeach; ?>
+        <?php foreach ($quiz_rows as $r): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($r["quiz_title"]); ?></td>
+            <td><?php echo htmlspecialchars($r["level"]); ?></td>
+            <td><?php echo (float)$r["score"]; ?></td>
+        </tr>
+        <?php endforeach; ?>
     </table>
-  <?php endif; ?>
+    <?php endif; ?>
 
-  <h3 style="margin-top:24px;">Nilai Tugas &amp; Kaiwa</h3>
-  <?php if (!$task_rows): ?>
+    <h3 style="margin-top:24px;">Nilai Tugas &amp; Kaiwa</h3>
+    <?php if (!$task_rows): ?>
     <p>Belum ada nilai tugas.</p>
-  <?php else: ?>
+    <?php else: ?>
     <table>
-      <tr>
-        <th>Tugas</th>
-        <th>Jenis</th>
-        <th>Level</th>
-        <th>Bab</th>
-        <th>Nilai</th>
-        <th>Nilai kaiwa</th>
-        <th>Tanggal</th>
-      </tr>
-      <?php foreach ($task_rows as $r): ?>
         <tr>
-          <td><?php echo htmlspecialchars($r["assignment_title"]); ?></td>
-          <td><?php echo htmlspecialchars($r["type"]); ?></td>
-          <td><?php echo htmlspecialchars($r["level"]); ?></td>
-          <td><?php echo (int)$r["chapter_start"]; ?>〜<?php echo (int)$r["chapter_end"]; ?></td>
-          <td><?php echo $r["score"] !== null ? (float)$r["score"] : "-"; ?></td>
-          <td><?php echo $r["kaiwa_score"] !== null ? (float)$r["kaiwa_score"] : "-"; ?></td>
-          <td><?php echo htmlspecialchars($r["submitted_at"]); ?></td>
+            <th>Tugas</th>
+            <th>Jenis</th>
+            <th>Level</th>
+            <th>Bab</th>
+            <th>Nilai</th>
+            <th>Nilai kaiwa</th>
+            <th>Tanggal</th>
         </tr>
-      <?php endforeach; ?>
+        <?php foreach ($task_rows as $r): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($r["assignment_title"]); ?></td>
+            <td><?php echo htmlspecialchars($r["type"]); ?></td>
+            <td><?php echo htmlspecialchars($r["level"]); ?></td>
+            <td><?php echo (int)$r["chapter_start"]; ?>〜<?php echo (int)$r["chapter_end"]; ?></td>
+            <td><?php echo $r["score"] !== null ? (float)$r["score"] : "-"; ?></td>
+            <td><?php echo $r["kaiwa_score"] !== null ? (float)$r["kaiwa_score"] : "-"; ?></td>
+            <td><?php echo htmlspecialchars($r["submitted_at"]); ?></td>
+        </tr>
+        <?php endforeach; ?>
     </table>
-  <?php endif; ?>
-</div>
-<?php require __DIR__ . "/../includes/footer.php"; ?>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Riwayat Nilai</div>
+        </div>
+
+        <div class="card-body">
+            <a class="btn btn-sm btn-outline-primary mb-3" href="<?php echo BASE_URL; ?>student/scores-export.php">
+                Export CSV
+            </a>
+
+            <h3>Ringkasan Nilai per Level</h3>
+            <?php endif; ?>
+        </div><!-- akhir .card-body -->
+    </div><!-- akhir .card -->
+    <?php require __DIR__ . "/../includes/footer.php"; ?>
