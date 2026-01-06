@@ -46,7 +46,8 @@ $isCompleted = $progress && $progress["status"] === "completed";
 
         <?php if ($isCompleted): ?>
         <p>
-            <button type="button" class="button" disabled>
+            <button type="button" class="button button-success" disabled
+                style="background-color:#28a745 !important;color:#fff !important;border-radius:8px !important;">
                 ✔ Materi sudah selesai
             </button>
         </p>
