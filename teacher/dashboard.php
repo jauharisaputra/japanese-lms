@@ -15,6 +15,12 @@ $u = currentUser();
     <p>Halo, <?php echo htmlspecialchars($u["full_name"] ?? $u["username"]); ?>.</p>
     <ul>
         <li><a href="<?php echo BASE_URL; ?>teacher/lessons.php">Kelola materi Daichi</a></li>
+        <li>
+            <a href="<?php echo BASE_URL; ?>teacher/dokkai.php">
+                📖 Kelola Dokkai (per 4 Bab)
+            </a>
+        </li>
+
         <li><a href="<?php echo BASE_URL; ?>teacher/lesson-create.php">Tambah materi baru</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/quizzes.php">Kelola kuis</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/students.php">Lihat siswa</a></li>
@@ -60,8 +66,7 @@ $quizRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="card-title">Rekap Kuis Terbaru</div>
     </div>
     <div class="card-body">
-        <a class="btn btn-sm btn-outline-primary mb-2"
-           href="<?php echo BASE_URL; ?>teacher/quiz-recap-export.php">
+        <a class="btn btn-sm btn-outline-primary mb-2" href="<?php echo BASE_URL; ?>teacher/quiz-recap-export.php">
             Export CSV Rekap Kuis
         </a>
         <?php if (!$quizRows): ?>
@@ -93,5 +98,3 @@ $quizRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php require __DIR__ . "/../includes/footer.php"; ?>
 
 </div>
-
-

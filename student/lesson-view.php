@@ -53,10 +53,14 @@ $isCompleted = $progress && $progress["status"] === "completed";
         </p>
         <?php else: ?>
         <p>
-            <a class="button"
-                href="lesson-complete.php?lesson_id=<?php echo $lesson_id; ?>&redirect=lesson-view.php?id=<?php echo $lesson_id; ?>">
+        <form method="post" action="lesson-complete.php" style="display:inline;">
+            <input type="hidden" name="lesson_id" value="<?= (int)$lesson_id ?>">
+            <input type="hidden" name="redirect" value="lesson-view.php?id=<?= (int)$lesson_id ?>">
+            <button type="submit" class="button">
                 Tandai materi selesai
-            </a>
+            </button>
+        </form>
+
         </p>
         <?php endif; ?>
 

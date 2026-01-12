@@ -21,7 +21,9 @@ require __DIR__ . "/../includes/header.php";
     </ul>
     <p>
         <a href="<?php echo BASE_URL; ?>student/lessons.php">Lanjut materi</a> |
-        <a href="<?php echo BASE_URL; ?>student/quizzes.php">Lanjut kuis</a> |
+        <a href="<?php echo BASE_URL; ?>student/quizzes.php">Lanjut kuis</a>
+        | <a href="<?php echo BASE_URL; ?>student/dokkai.php">📖 Dokkai</a>
+        |
         <a href="<?php echo BASE_URL; ?>student/scores.php">Lihat riwayat nilai</a> |
         <a href="<?php echo BASE_URL; ?>student/assignments.php">Tugas &amp; Fukushuu</a> |
         <a href="<?php echo BASE_URL; ?>student/rapor_view.php">📜 Rapor N5</a>
@@ -34,4 +36,39 @@ require __DIR__ . "/../includes/header.php";
         <a href="<?php echo BASE_URL; ?>student/quiz_kanji_n4.php">Kuis Kanji N4</a>
     </p>
 </div>
+<?php
+$pdo = getPDO();
+
+/* Ambil progres lesson siswa */
+$lesson_completed = (int)($user["lessons_completed"] ?? 0);
+$level = $user["level"] ?? "N5";
+
+/* Cari dokkai yang sesuai */
+$stmt = $pdo->prepare("
+    SELECT *
+    FROM dokkai
+    WHERE level = ?
+      AND chapter_start <= ?
+    ORDER BY chapter_start DESC
+    LIMIT 1
+");
+$stmt->execute([$level, $lesson_completed]);
+$activeDokkai = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+
+<?php if ($activeDokkai): ?>
+<div class="card" style="margin-top:16px;">
+    <div class="card-header">
+        <div class="card-title">📖 Dokkai Aktif</div>
+    </div>
+    <p>
+        Anda telah membuka:
+        <strong><?= htmlspecialchars($activeDokkai["title"]) ?></strong>
+    </p>
+    <a class="button" href="<?= BASE_URL ?>student/dokkai.php">
+        Buka Dokkai
+    </a>
+</div>
+<?php endif; ?>
+
 <?php require __DIR__ . "/../includes/footer.php"; ?>
