@@ -7,21 +7,21 @@ $user = currentUser();
 $pdo = getPDO();
 
 // Ambil data POST
-$dokkai_id = (int)($_POST['dokkai_id'] ?? 0);
+$choukai_id = (int)($_POST['choukai_id'] ?? 0);
 $answers = $_POST['answers'] ?? [];
 
 // Validasi dasar
-if ($dokkai_id <= 0) {
-    die("Dokkai tidak valid.");
+if ($choukai_id <= 0) {
+    die("choukai tidak valid.");
 }
 
-// Ambil semua soal dari database untuk dokkai ini
-$stmt = $pdo->prepare("SELECT id, correct FROM dokkai_questions WHERE dokkai_id = ?");
-$stmt->execute([$dokkai_id]);
+// Ambil semua soal dari database untuk choukai ini
+$stmt = $pdo->prepare("SELECT id, correct FROM choukai_questions WHERE choukai_id = ?");
+$stmt->execute([$choukai_id]);
 $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$questions) {
-    die("Soal untuk dokkai ini belum tersedia.");
+    die("Soal untuk choukai ini belum tersedia.");
 }
 
 // Hitung skor
@@ -37,13 +37,13 @@ foreach ($questions as $q) {
 // Total soal
 $totalQuestions = count($questions);
 
-// Simpan hasil ke tabel dokkai_results
+// Simpan hasil ke tabel choukai_results
 $stmt = $pdo->prepare("
-    INSERT INTO dokkai_results (dokkai_id, user_id, score, total_questions, answers, submitted_at)
+    INSERT INTO choukai_results (choukai_id, user_id, score, total_questions, answers, submitted_at)
     VALUES (?, ?, ?, ?, ?, NOW())
 ");
 $stmt->execute([
-    $dokkai_id,
+    $choukai_id,
     $user['id'],
     $score,
     $totalQuestions,
@@ -52,5 +52,5 @@ $stmt->execute([
 
 // Redirect ke halaman hasil
 // Gunakan relative path agar tidak duplikasi folder
-header("Location: dokkai-result.php?id={$dokkai_id}");
+header("Location: choukai-result.php?id={$choukai_id}");
 exit;

@@ -20,6 +20,23 @@ $u = currentUser();
                 📖 Kelola Dokkai (per 4 Bab)
             </a>
         </li>
+        <li>
+            <a href="<?php echo BASE_URL; ?>teacher/dokkai-results.php">
+                📊 Hasil Dokkai Siswa
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo BASE_URL; ?>teacher/choukai.php">
+                🎧 Kelola Choukai (per 4 Bab)
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo BASE_URL; ?>teacher/choukai-results.php">
+                📊 Hasil Choukai Siswa
+            </a>
+        </li>
+
+
 
         <li><a href="<?php echo BASE_URL; ?>teacher/lesson-create.php">Tambah materi baru</a></li>
         <li><a href="<?php echo BASE_URL; ?>teacher/quizzes.php">Kelola kuis</a></li>
