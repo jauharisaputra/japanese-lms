@@ -4,53 +4,44 @@ require_once __DIR__ . "/../includes/functions.php";
 
 requireRole(['student']);
 $user = currentUser();
-$pdo = getPDO();
 
-// Ambil data POST
-$choukai_id = (int)($_POST['choukai_id'] ?? 0);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    die("Metode request tidak valid.");
+}
+
+// Ambil data dari form
+$choukai_id = $_POST['choukai_id'] ?? 0;
 $answers = $_POST['answers'] ?? [];
 
-// Validasi dasar
-if ($choukai_id <= 0) {
-    die("choukai tidak valid.");
+if (!$choukai_id || empty($answers)) {
+    die("Data jawaban tidak lengkap.");
 }
 
-// Ambil semua soal dari database untuk choukai ini
-$stmt = $pdo->prepare("SELECT id, correct FROM choukai_questions WHERE choukai_id = ?");
-$stmt->execute([$choukai_id]);
-$questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$pdo = getPDO();
 
-if (!$questions) {
-    die("Soal untuk choukai ini belum tersedia.");
-}
+// Simpan jawaban dalam format JSON
+$answers_json = json_encode($answers, JSON_UNESCAPED_UNICODE);
 
-// Hitung skor
-$score = 0;
-foreach ($questions as $q) {
-    $qid = $q['id'];
-    $correct = (int)$q['correct'];
-    if (isset($answers[$qid]) && (int)$answers[$qid] === $correct) {
-        $score++;
+try {
+    // Cek apakah siswa sudah pernah submit sebelumnya
+    $stmt = $pdo->prepare("SELECT id FROM choukai_answers WHERE choukai_id=? AND user_id=?");
+    $stmt->execute([$choukai_id, $user['id']]);
+    $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($existing) {
+        // Update jawaban lama
+        $stmt = $pdo->prepare("UPDATE choukai_answers SET answers=?, created_at=NOW() WHERE id=?");
+        $stmt->execute([$answers_json, $existing['id']]);
+    } else {
+        // Insert jawaban baru
+        $stmt = $pdo->prepare("INSERT INTO choukai_answers (choukai_id, user_id, answers) VALUES (?, ?, ?)");
+        $stmt->execute([$choukai_id, $user['id'], $answers_json]);
     }
+
+    // Redirect ke halaman Terima Kasih
+    header("Location: " . BASE_URL . "student/choukai-thanks.php");
+    exit;
+
+} catch (PDOException $e) {
+    die("Terjadi kesalahan saat menyimpan jawaban: " . $e->getMessage());
 }
-
-// Total soal
-$totalQuestions = count($questions);
-
-// Simpan hasil ke tabel choukai_results
-$stmt = $pdo->prepare("
-    INSERT INTO choukai_results (choukai_id, user_id, score, total_questions, answers, submitted_at)
-    VALUES (?, ?, ?, ?, ?, NOW())
-");
-$stmt->execute([
-    $choukai_id,
-    $user['id'],
-    $score,
-    $totalQuestions,
-    json_encode($answers, JSON_UNESCAPED_UNICODE)
-]);
-
-// Redirect ke halaman hasil
-// Gunakan relative path agar tidak duplikasi folder
-header("Location: choukai-result.php?id={$choukai_id}");
-exit;

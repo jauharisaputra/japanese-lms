@@ -70,5 +70,35 @@ $activeDokkai = $stmt->fetch(PDO::FETCH_ASSOC);
     </a>
 </div>
 <?php endif; ?>
+<?php
+// Ambil Choukai terakhir yang sudah bisa diakses siswa
+$stmt = $pdo->prepare("
+    SELECT *
+    FROM choukai
+    WHERE level = ?
+    ORDER BY chapter_start ASC
+");
+$stmt->execute([$level]);
+$choukaiList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<?php if ($choukaiList): ?>
+<div class="card" style="margin-top:16px;">
+    <div class="card-header">
+        <div class="card-title">🎧 Choukai Tersedia</div>
+    </div>
+    <ul>
+        <?php foreach ($choukaiList as $c): ?>
+        <li>
+            <?= htmlspecialchars("Bab {$c['chapter_start']}–{$c['chapter_end']} - {$c['title']}") ?>
+            |
+            <a href="<?= BASE_URL ?>student/choukai.php?id=<?= $c['id'] ?>">Mulai</a> |
+            <a href="<?= BASE_URL ?>student/choukai-result.php?id=<?= $c['id'] ?>">Lihat Hasil</a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>
+
 
 <?php require __DIR__ . "/../includes/footer.php"; ?>

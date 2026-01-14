@@ -1,110 +1,165 @@
 <?php
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../includes/functions.php";
 
-requireRole(['teacher','admin']);
-$page_title = 'Tambah Soal choukai (JSON)';
-require __DIR__ . '/../includes/header.php';
+requireRole(["teacher","admin"]);
+$page_title = "Tambah Soal Choukai";
+require __DIR__ . "/../includes/header.php";
 
-$pdo = getPDO();
-
+$pdo  = getPDO();
+$user = currentUser();
 $errors = [];
-$choukai_id = '';
-$level = 'N5';
-$questions_json = '';
 
-// Ambil daftar choukai
-$stmt = $pdo->query('SELECT id, title, chapter_start, chapter_end, level FROM choukai ORDER BY level, chapter_start');
-$choukai_list = $stmt->fetchAll();
+/* =========================
+   AMBIL CHOUKAI
+   ========================= */
+$choukai_id = (int)($_GET['choukai_id'] ?? 0);
+if (!$choukai_id) {
+    die("Choukai tidak valid.");
+}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $choukai_id = (int)($_POST['choukai_id'] ?? 0);
-    $level = $_POST['level'] ?? 'N5';
-    $questions_json = trim($_POST['questions'] ?? '');
+$stmt = $pdo->prepare("SELECT * FROM choukai WHERE id = ?");
+$stmt->execute([$choukai_id]);
+$choukai = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($choukai_id <= 0) { $errors[] = 'choukai harus dipilih.'; }
-    if (!in_array($level, ['N5','N4'], true)) { $errors[] = 'Level tidak valid.'; }
-    if ($questions_json === '') { $errors[] = 'Soal (JSON) wajib diisi.'; }
+if (!$choukai) {
+    die("Data choukai tidak ditemukan.");
+}
 
-    $decoded = json_decode($questions_json, true);
-    if ($questions_json !== '' && !is_array($decoded)) {
-        $errors[] = 'Format JSON soal tidak valid.';
+/* =========================
+   PROSES SIMPAN SOAL
+   ========================= */
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $question = trim($_POST['question'] ?? '');
+    $option_a = trim($_POST['option_a'] ?? '');
+    $option_b = trim($_POST['option_b'] ?? '');
+    $option_c = trim($_POST['option_c'] ?? '');
+    $option_d = trim($_POST['option_d'] ?? '');
+    $correct_answer = $_POST['correct_answer'] ?? '';
+    $question_order = (int)($_POST['question_order'] ?? 0);
+
+    /* --- Validasi --- */
+    if ($question === '') {
+        $errors[] = "Pertanyaan wajib diisi.";
+    }
+
+    if (!in_array($correct_answer, ['A','B','C','D'])) {
+        $errors[] = "Jawaban benar harus A / B / C / D.";
     }
 
     if (!$errors) {
-        $stmt = $pdo->prepare('INSERT INTO choukai_questions (choukai_id, question, options, correct) VALUES (?,?,?,?)');
 
-        foreach ($decoded as $q) {
-            if (!isset($q['question'], $q['options'], $q['correct'])) continue;
+        /* Simpan soal */
+        $stmt = $pdo->prepare("
+            INSERT INTO choukai_questions
+            (choukai_id, question, option_a, option_b, option_c, option_d, correct_answer, question_order)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ");
 
-            $options = array_values($q['options']);
-            $correct = (int)$q['correct'];
+        $stmt->execute([
+            $choukai_id,
+            $question,
+            $option_a,
+            $option_b,
+            $option_c,
+            $option_d,
+            $correct_answer,
+            $question_order
+        ]);
 
-            $stmt->execute([
-                $choukai_id,
-                $q['question'],
-                json_encode($options, JSON_UNESCAPED_UNICODE),
-                $correct
-            ]);
-        }
-
-        redirect('teacher/choukai.php?level=' . urlencode($level));
+        header("Location: choukai-add-questions.php?choukai_id={$choukai_id}&success=1");
+        exit;
     }
 }
+
+/* =========================
+   AMBIL LIST SOAL
+   ========================= */
+$stmt = $pdo->prepare("
+    SELECT *
+    FROM choukai_questions
+    WHERE choukai_id = ?
+    ORDER BY question_order, id
+");
+$stmt->execute([$choukai_id]);
+$questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h1>Tambah Soal choukai (JSON)</h1>
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            Tambah Soal – <?= htmlspecialchars($choukai['title']) ?>
+        </div>
+    </div>
 
-<p>Format JSON contoh:</p>
-<pre>
-[
-  {
-    "question": "Halo dalam bahasa Jepang?",
-    "options": ["こんにちは", "さようなら", "ありがとう", "おはよう"],
-    "correct": 0
-  },
-  {
-    "question": "Arti ありがとう",
-    "options": ["Halo", "Terima kasih", "Selamat tinggal", "Selamat pagi"],
-    "correct": 1
-  }
-]
-</pre>
+    <?php if (!empty($_GET['success'])): ?>
+    <div class="alert success">Soal berhasil ditambahkan.</div>
+    <?php endif; ?>
 
-<?php if ($errors): ?>
-<ul style="color:red;">
-    <?php foreach ($errors as $e): ?>
-    <li><?php echo htmlspecialchars($e); ?></li>
-    <?php endforeach; ?>
-</ul>
-<?php endif; ?>
-
-<form method="post">
-    <p>
-        <label>Level</label><br>
-        <select name="level">
-            <option value="N5" <?php echo $level==='N5'?'selected':''; ?>>N5</option>
-            <option value="N4" <?php echo $level==='N4'?'selected':''; ?>>N4</option>
-        </select>
-    </p>
-    <p>
-        <label>Pilih choukai</label><br>
-        <select name="choukai_id" required>
-            <option value="">-- pilih choukai --</option>
-            <?php foreach ($choukai_list as $d): ?>
-            <option value="<?= (int)$d['id']; ?>" <?= $choukai_id==$d['id']?'selected':''; ?>>
-                <?= htmlspecialchars($d['level'] . ' Bab ' . $d['chapter_start'] . '-' . $d['chapter_end'] . ' - ' . $d['title']); ?>
-            </option>
+    <?php if ($errors): ?>
+    <div class="alert error">
+        <ul>
+            <?php foreach ($errors as $err): ?>
+            <li><?= htmlspecialchars($err) ?></li>
             <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php endif; ?>
+
+    <form method="post">
+
+        <label>Pertanyaan</label>
+        <textarea name="question" rows="3" required></textarea>
+
+        <label>Opsi A</label>
+        <input type="text" name="option_a" required>
+
+        <label>Opsi B</label>
+        <input type="text" name="option_b" required>
+
+        <label>Opsi C</label>
+        <input type="text" name="option_c" required>
+
+        <label>Opsi D</label>
+        <input type="text" name="option_d" required>
+
+        <label>Jawaban Benar</label>
+        <select name="correct_answer" required>
+            <option value="">-- Pilih --</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
         </select>
-    </p>
-    <p>
-        <label>Soal (JSON)</label><br>
-        <textarea name="questions" rows="12" cols="70"><?= htmlspecialchars($questions_json); ?></textarea>
-    </p>
-    <button type="submit">Simpan Soal</button>
-</form>
 
-<p><a href="choukai.php">&laquo; Kembali ke daftar choukai</a></p>
+        <label>Urutan Soal</label>
+        <input type="number" name="question_order" value="<?= count($questions)+1 ?>">
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+        <div style="margin-top:12px;">
+            <button type="submit">Tambah Soal</button>
+            <a href="choukai.php" class="button secondary">Kembali</a>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="margin-top:16px;">
+    <div class="card-header">
+        <div class="card-title">Daftar Soal</div>
+    </div>
+
+    <?php if (!$questions): ?>
+    <p>Belum ada soal.</p>
+    <?php else: ?>
+    <ol>
+        <?php foreach ($questions as $q): ?>
+        <li>
+            <?= htmlspecialchars($q['question']) ?>
+            <small>(<?= $q['correct_answer'] ?>)</small>
+        </li>
+        <?php endforeach; ?>
+    </ol>
+    <?php endif; ?>
+</div>
+
+<?php require __DIR__ . "/../includes/footer.php"; ?>
