@@ -26,15 +26,23 @@ $u = currentUser();
             </a>
         </li>
         <li>
-            <a href="<?php echo BASE_URL; ?>teacher/choukai.php">
-                🎧 Kelola Choukai (per 4 Bab)
+            <a href="<?php echo BASE_URL; ?>teacher/choukai-upload.php">
+                🎧 Upload Choukai (Audio & PDF)
             </a>
         </li>
+
+
+
+
         <li>
-            <a href="<?php echo BASE_URL; ?>teacher/choukai-results.php">
-                📊 Hasil Choukai Siswa
+            <a href="<?= BASE_URL ?>teacher/choukai-recap.php">
+                📊 Rekap & Nilai Choukai
             </a>
+
+
+
         </li>
+
 
 
 
