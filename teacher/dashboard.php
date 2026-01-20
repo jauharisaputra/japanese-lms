@@ -57,6 +57,7 @@ $quizRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <li><a href="<?= BASE_URL ?>teacher/students.php">Lihat Siswa</a></li>
         <li><a href="<?= BASE_URL ?>teacher/classes.php">Kelola Kelas</a></li>
         <li><a href="<?= BASE_URL ?>teacher/lesson-progress.php">Progres Lesson Siswa</a></li>
+        <li><a href="<?= BASE_URL ?>teacher/activity-recap.php">🔥 Rekap Keaktifan Siswa</a></li>
         <li><a href="<?= BASE_URL ?>teacher/analytics.php">Analitik Nilai Siswa</a></li>
     </ul>
 
