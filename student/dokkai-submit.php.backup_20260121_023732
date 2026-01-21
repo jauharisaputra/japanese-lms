@@ -1,0 +1,56 @@
+<?php
+require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../includes/functions.php";
+
+requireRole(['student']);
+$user = currentUser();
+$pdo = getPDO();
+
+// Ambil data POST
+$dokkai_id = (int)($_POST['dokkai_id'] ?? 0);
+$answers = $_POST['answers'] ?? [];
+
+// Validasi dasar
+if ($dokkai_id <= 0) {
+    die("Dokkai tidak valid.");
+}
+
+// Ambil semua soal dari database untuk dokkai ini
+$stmt = $pdo->prepare("SELECT id, correct FROM dokkai_questions WHERE dokkai_id = ?");
+$stmt->execute([$dokkai_id]);
+$questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (!$questions) {
+    die("Soal untuk dokkai ini belum tersedia.");
+}
+
+// Hitung skor
+$score = 0;
+foreach ($questions as $q) {
+    $qid = $q['id'];
+    $correct = (int)$q['correct'];
+    if (isset($answers[$qid]) && (int)$answers[$qid] === $correct) {
+        $score++;
+    }
+}
+
+// Total soal
+$totalQuestions = count($questions);
+
+// Simpan hasil ke tabel dokkai_results
+$stmt = $pdo->prepare("
+    INSERT INTO dokkai_results (dokkai_id, user_id, score, total_questions, answers, submitted_at)
+    VALUES (?, ?, ?, ?, ?, NOW())
+");
+$stmt->execute([
+    $dokkai_id,
+    $user['id'],
+    $score,
+    $totalQuestions,
+    json_encode($answers, JSON_UNESCAPED_UNICODE)
+]);
+
+// Redirect ke halaman hasil
+// Gunakan relative path agar tidak duplikasi folder
+header("Location: dokkai-result.php?id={$dokkai_id}");
+exit;
